@@ -1,4 +1,4 @@
 # MethaneMapper: Spectral Absorption aware Hyperspectral Transformer for Methane Detection
 
 
-The dataset is under preparation. Both the dataset and source code link will be pasted here soon..
+The source code and data upload is under progress. Thank you so much for the patience.
