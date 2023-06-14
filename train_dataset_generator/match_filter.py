@@ -168,15 +168,15 @@ def match_filter(b_img_data, target, num_columns):
                                          index=None)
         print("Calculating stats of matchFilter...")
         '''
-			Matched Filter for processing hyperspectral data
-			H0 background distribution -> get it from the most of the images so as to
-			have a good background distribution
-			H1 target distribution -> get it from the multiple image with the source information.
+	Matched Filter for processing hyperspectral data
+	H0 background distribution -> get it from the most of the images so as to
+	have a good background distribution
+	H1 target distribution -> get it from the multiple image with the source information.
 
-			aplha(x)=\frac{(\mu_t-\mu_b)^T\Sigma^{-1}(x-\mu_b)}{(\mu_t-\mu_b)^T\Sigma^{-1}(\mu_t-\mu_b)}
-			OR
-			aplha(x) = a_hat = (transpose(x-u) . inv_cov . (t-u) / (transpose(t-u) . inv_cov . (t-u))
-		'''
+	aplha(x)=\frac{(\mu_t-\mu_b)^T\Sigma^{-1}(x-\mu_b)}{(\mu_t-\mu_b)^T\Sigma^{-1}(\mu_t-\mu_b)}
+	OR
+	aplha(x) = a_hat = (transpose(x-u) . inv_cov . (t-u) / (transpose(t-u) . inv_cov . (t-u))
+	'''
 
         print("b_img_data", b_img_data[:, _cols:col_range, :].shape, "target_mean : ", \
            target.shape)
