@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
 
-class Indexes():
+class Indexes:
     def __init__(self, args):
         self.args = args
         print("Initializing Index computation class")
@@ -21,8 +21,8 @@ class Indexes():
         self.mask_val = -100.0
 
     def ndvi(self, img):
-        #picking bands with guassain distribution with sigma 3
-        #TODO : binomial distribution
+        # picking bands with guassain distribution with sigma 3
+        # TODO : binomial distribution
         idxs = np.random.normal(15, 3, 10)
         b = img[:, :, np.uint8(idxs)]
         self.B = np.sum(b, axis=2) / len(idxs)
@@ -40,44 +40,36 @@ class Indexes():
         self.Infra = np.sum(inf, axis=2) / len(idxs)
 
         # Allow division by zero
-        np.seterr(divide='ignore', invalid='ignore')
-        '''
+        np.seterr(divide="ignore", invalid="ignore")
+        """
 				#water
 				ndvi_water = (G.astype(float) - infra.astype(float))/(infra+G)
 				if(np.isnan(ndvi_water).any()):
 						ndvi_water = np.ma.masked_invalid(ndvi_water)
-				'''
+				"""
 
-        #vegetation
-        ndvi_veg = (self.Infra.astype(float) - self.R.astype(float)) / (
-            self.Infra + self.R + self.epsilon)
-        #if(np.isnan(ndvi_veg).any()):
-        #	ndvi_veg = np.ma.masked_invalid(ndvi_veg)
+        # vegetation
+        ndvi_veg = (self.Infra.astype(float) - self.R.astype(float)) / (self.Infra + self.R + self.epsilon)
+        # if(np.isnan(ndvi_veg).any()):
+        # 	ndvi_veg = np.ma.masked_invalid(ndvi_veg)
 
         return ndvi_veg
 
     def getLandCls(self, img, img_mask):
         img = self.ndvi(img)
         img[img_mask] = self.mask_val
-        ndvi_class_bins = [
-            -np.inf, self.mask_val + 1, -0.6, -0.3, -0.08, 0, 0.4, 0.6, 0.8,
-            np.inf
-        ]
+        ndvi_class_bins = [-np.inf, self.mask_val + 1, -0.6, -0.3, -0.08, 0, 0.4, 0.6, 0.8, np.inf]
         ndvi_class = np.digitize(img, ndvi_class_bins)
-        cus_clr = [
-            "black", "red", "orange", "salmon", "y", "olive", "yellowgreen",
-            "g", "darkgreen"
-        ]
+        cus_clr = ["black", "red", "orange", "salmon", "y", "olive", "yellowgreen", "g", "darkgreen"]
         self.cus_cmap = ListedColormap(cus_clr)
         self.ndvi_class = np.ma.masked_where(np.ma.getmask(img), ndvi_class)
 
-        #generate RGB color image for tiling
+        # generate RGB color image for tiling
         clr_img = self.visualize_rgb(split_flag=True, mask=img_mask)
 
         return self.cus_cmap, self.ndvi_class, clr_img
 
     def visualizer(self):
-
         if self.args.side_by_side:
             self.visualize_rgb(split_flag=False)
             self.visualize_land_cls()
@@ -89,8 +81,7 @@ class Indexes():
                 self.visualize_land_cls()
 
     def visualize_rgb(self, split_flag=False, mask=None):
-
-        #create color image of ground terrain
+        # create color image of ground terrain
         B = self.B
         G = self.G
         R = self.R
@@ -126,15 +117,10 @@ class Indexes():
             return clr_img
 
     def visualize_land_cls(self):
-
         vmin = self.ndvi_class.min()
         vmax = self.ndvi_class.max()
 
-        plt.imsave("out.png",
-                   self.ndvi_class,
-                   vmin=vmin,
-                   vmax=vmax,
-                   cmap=self.cus_cmap)
+        plt.imsave("out.png", self.ndvi_class, vmin=vmin, vmax=vmax, cmap=self.cus_cmap)
 
     def visualize_side_by_side(self):
         rgb_im = cv2.imread("rgb_out.png")
