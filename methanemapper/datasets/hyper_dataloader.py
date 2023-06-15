@@ -1,23 +1,17 @@
-# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
-"""
-COCO dataset which returns image_id for evaluation.
+# Copyright (c) UCSB
 
-Mostly copy-paste from https://github.com/pytorch/vision/blob/13b35ff/references/detection/coco_utils.py
-"""
-from pathlib import Path
 import json
+from pathlib import Path
+
 import numpy as np
-
 import torch
-import torch.utils.data
-import torchvision
-from pycocotools import mask as coco_mask
-import glob
 
+from skimage import draw
 import datasets.transforms as T
 import torch.utils.data as tdata
+import glob
 
-class HyperDetection(tdata.Dataset):
+class HyperSegment(tdata.Dataset):
 	def __init__(self, img_folder, ann_file, stats_file, return_masks):
 		self.data_items = LoadItems(img_folder, ann_file, stats_file)
 		self._transform_rgb = makeHyperTransform(img_type='rgb')
@@ -30,8 +24,6 @@ class HyperDetection(tdata.Dataset):
 		rgb_path =	self.data_items.rgb_paths[idx]
 		mf_path = self.data_items.mf_paths[idx]
 		raw_path = self.data_items.raw_paths[idx]
-		#target_key = rgb_path.split("/")[-1].split(".")[0].split("_")
-		#target = self.data_items.anns[f"{target_key[0]}-{target_key[-2]}_{target_key[-1]}"]
 		target = self.data_items.anns[self.target_keys[idx]]
 		rgb_img, mf_img, raw_img, target = self.prepare(rgb_path, mf_path, raw_path, target)
 
@@ -46,7 +38,6 @@ class HyperDetection(tdata.Dataset):
 			"raw" : raw_img,
 			"target" : target
 			}
-
 
 	def __len__(self):
 		return len(self.data_items.rgb_paths)
@@ -127,15 +118,6 @@ class LoadItems:
 				patch_id[f"{ann['patch_name']}"] = ann['patch_id']
 				unq_id += 1
 
-				'''
-				anns[f"{ann['image_id']}-{ann['patch_id']}"] = {'segmentation' : ann['segmentation'],
-																'bbox' : ann['bbox'],
-																'category_id' : ann['category_id'],
-																'image_id' : unq_id}
-				img_id[f"{ann['image_id']}-{ann['patch_id']}"] = ann['image_id']
-				patch_id[f"{ann['image_id']}-{ann['patch_id']}"] = ann['patch_id']
-				unq_id += 1
-				'''
 		#create class members
 		self.anns = anns
 		self.img_id = img_id
@@ -149,16 +131,11 @@ class LoadItems:
 		for _ann_key in list(self.anns.keys()):
 			_iid = self.img_id[_ann_key]
 			_pid = self.patch_id[_ann_key]
-			''' TOO SLOW
-			_rgb = glob.glob(f"{self.img_dir}/rgb_tiles/{_iid}_*/*_{_pid}.npy")
-			_mf = glob.glob(f"{self.img_dir}/mf_tiles/{_iid}_*/*_{_pid}.npy")
-			_raw = glob.glob(f"{self.img_dir}/rdata_tiles/{_iid}_*/*_{_pid}.npy")
-			'''
+
 			_rgb = glob.glob(f"{self.img_dir}/rgb_tiles/{_iid}_*/*_{_pid}.npy")[0]
 			_tmp = _rgb.split("/")
 			_mf = f"{self.img_dir}/mf_tiles/{_tmp[-2]}/{_tmp[-1]}"
 			_raw = f"{self.img_dir}/rdata_tiles/{_tmp[-2]}/{_tmp[-1]}"
-			#assert len(_rgb)==1 and len(_mf)==1 and len(_raw)==1, "Paths mismatch"
 			rgb_paths.append(_rgb), mf_paths.append(_mf), raw_paths.append(_raw)
 
 		assert len(rgb_paths)==len(self.anns), "Number of annotations are different from images"
@@ -178,7 +155,7 @@ class ConvertHyperToMask(object):
 		mf_img = np.expand_dims(np.load(mf_path), axis=2).transpose((2,0,1))
 		raw_img = np.load(raw_path).transpose((2,0,1))
 
-		_, w, h = rgb_img.shape
+		_, h, w = rgb_img.shape
 
 		image_id = target["image_id"]
 		image_id = torch.tensor([image_id])
@@ -201,7 +178,6 @@ class ConvertHyperToMask(object):
 
 		#_plotGTforVerify(mf_path, rgb_path, target)
 
-
 		boxes = target["bbox"]
 		#guard against no boxes via resizing
 		boxes = torch.as_tensor(boxes, dtype=torch.float32).reshape(-1, 4)
@@ -212,13 +188,19 @@ class ConvertHyperToMask(object):
 		classes = target["category_id"]
 		classes = torch.tensor(classes, dtype=torch.int64)
 
+		masks = []
 		if self.return_masks:
 			segmentations = target["segmentation"]
+			for _seg in segmentations:
+				#convert boundary pixels to binary segmentation mask
+				masks.append(draw.polygon2mask((w, h), np.array(_seg)).T) #this function takes image shape in w,h
+			masks = np.array(masks)
 
 		keep = (boxes[:, 3] > boxes[:, 1]) & (boxes[:, 2] > boxes[:, 0])
 		boxes = boxes[keep]
 		classes = classes[keep]
 		if self.return_masks:
+			masks = torch.from_numpy(masks)
 			masks = masks[keep]
 
 		target = {}
@@ -227,21 +209,22 @@ class ConvertHyperToMask(object):
 		target["image_id"] = image_id
 		if self.return_masks:
 			target["masks"] = masks
+			#print("masks", masks.shape, raw_path)
 
 		target["orig_size"] = torch.as_tensor([int(h), int(w)])
 		target["size"] = torch.as_tensor([int(h), int(w)])
 
 		return rgb_img, mf_img, raw_img, target
 
-def build_hyper(image_set, args):
+def buildHyperSeg(image_set, args):
 	root = Path(args.hyper_path)
 	assert root.exists(), f'provided hyperspectral data path {root} does not exist'
 	PATHS = {
-		"train" : (root / "train", root / "annotations" / "train" / "train2020.json" , root / "data_stats"),
-		"val": (root / "val", root / "annotations" / "train" / "val2020.json" , root / "data_stats")
+		"train" : (root / "train", root / "annotations" / "train" / "train_dummy.json" , root / "data_stats"),
+		"val": (root / "val", root / "annotations" / "train" / "val_dummy.json" , root / "data_stats")
 		}
 
 	img_folder, ann_file, stats_file = PATHS[image_set]
-	dataset = HyperDetection(img_folder, ann_file, stats_file, return_masks=args.masks)
+	dataset = HyperSegment(img_folder, ann_file, stats_file, return_masks=args.masks)
 
 	return dataset

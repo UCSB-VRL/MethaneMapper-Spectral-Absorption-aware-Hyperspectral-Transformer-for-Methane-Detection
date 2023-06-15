@@ -1,11 +1,11 @@
-# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
+# Copyright (c) UCSB
 """
-DETR Transformer class.
+MethaneMapper Transformer class.
 
-Copy-paste from torch.nn.Transformer with modifications:
-	* positional encodings are passed in MHattention
-	* extra LN at the end of encoder is removed
-	* decoder returns a stack of activations from all decoding layers
+	* Our Query refiner module is implemented here
+	* The methane plume candidate maps from the Spectral Feature Generator as passed here
+	* To generate refined queries and passed on to decoder module
+
 """
 import copy
 from typing import Optional, List

@@ -1,4 +1,5 @@
-# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
+# Copyright (c) UCSB
+
 """
 Transforms and data augmentation for both image + bbox.
 """

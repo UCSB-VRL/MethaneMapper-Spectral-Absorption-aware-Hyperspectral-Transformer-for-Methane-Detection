@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
+# Copyright (c) UCSB
 """
 Utilities for bounding box manipulation and GIoU.
 """

@@ -6,7 +6,6 @@ import torch.nn.functional as F
 from .basemodel import ResnetBackbone, _NestedTensor
 from .position_encoding import build_position_encoding
 from util.misc import NestedTensor, is_main_process
-#from models.detr import MLP
 
 #TODO : add masks to all the outputs.. missing right now. make nested tensor and then return the values
 

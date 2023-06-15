@@ -1,4 +1,5 @@
-# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
+# Copyright (c) UCSB
+
 import argparse
 import datetime
 import json
@@ -135,7 +136,7 @@ def main(args):
 	model.to(device)
 
 	if args.pretrained:
-		#load checkpoint
+		#initialize with pretrained weights of DETR model
 		checkpoint = torch.hub.load_state_dict_from_url(
 			url="https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth", map_location="cpu", check_hash=True
 		)
@@ -250,7 +251,7 @@ def main(args):
 
 
 if __name__ == '__main__':
-	parser = argparse.ArgumentParser('DETR training and evaluation script', parents=[get_args_parser()])
+	parser = argparse.ArgumentParser('MethaneMapper training and evaluation script', parents=[get_args_parser()])
 	args = parser.parse_args()
 	if args.output_dir:
 		Path(args.output_dir).mkdir(parents=True, exist_ok=True)

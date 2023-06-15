@@ -1,6 +1,6 @@
-# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
+# Copyright (c) UCSB
 """
-Modules to compute the matching cost and solve the corresponding LSAP.
+Modules to compute the matching cost and solve the corresponding LSAP. This code is imported from DETR repository of facebook
 """
 import torch
 from scipy.optimize import linear_sum_assignment

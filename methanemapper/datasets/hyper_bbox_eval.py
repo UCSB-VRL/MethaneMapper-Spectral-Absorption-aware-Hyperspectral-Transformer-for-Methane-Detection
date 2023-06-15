@@ -1,3 +1,5 @@
+# Copyright (c) UCSB
+
 import numpy as np
 from collections import defaultdict
 from util import box_ops

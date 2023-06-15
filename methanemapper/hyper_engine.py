@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
+# Copyright (c) UCSB
 """
 Train and eval functions used in main.py
 """
@@ -11,7 +11,7 @@ import torch
 
 import util.misc as utils
 from datasets.hyper_segm_eval import HyperEvaluator as segm_evaluator
-from datasets.hyper_eval import HyperEvaluator as box_evaluator
+from datasets.hyper_bbox_eval import HyperEvaluator as box_evaluator
 
 def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
 					data_loader: Iterable, optimizer: torch.optim.Optimizer,

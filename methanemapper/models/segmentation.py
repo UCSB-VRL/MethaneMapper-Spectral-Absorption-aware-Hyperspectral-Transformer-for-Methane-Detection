@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
+# Copyright (c) UCSB
 """
 This file provides the definition of the convolutional heads used to predict masks, as well as the losses
 """
@@ -21,7 +21,11 @@ except ImportError:
 	pass
 
 
-class DETRsegm(nn.Module):
+"""
+MethaneMapper's segmentation module is same implementation as the DETR architecture for segmentation
+"""
+
+class MMsegm(nn.Module):
 	def __init__(self, detr, freeze_detr=False):
 		super().__init__()
 		self.detr = detr

@@ -1,6 +1,6 @@
-# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
+# Copyright (c) UCSB
 """
-DETR model and criterion classes.
+MethaneMapper model and criterion classes.
 """
 import torch
 import torch.nn.functional as F
@@ -13,21 +13,20 @@ from util.misc import (NestedTensor, nested_tensor_from_tensor_list,
 
 from .backbone import build_backbone
 from .matcher import build_matcher
-from .segmentation import (DETRsegm, PostProcessPanoptic, PostProcessSegm,
+from .segmentation import (MMsegm, PostProcessPanoptic, PostProcessSegm,
 						   dice_loss, sigmoid_focal_loss)
 from .transformer import build_transformer
 
 
-class DETR(nn.Module):
-	""" This is the DETR module that performs object detection """
+class MethaneMapper(nn.Module):
+	""" This is the MethaneMapper module that performs methane plume detection detection """
 	def __init__(self, backbone, transformer, num_classes, num_queries, aux_loss=False):
 		""" Initializes the model.
 		Parameters:
 			backbone: torch module of the backbone to be used. See backbone.py
 			transformer: torch module of the transformer architecture. See transformer.py
 			num_classes: number of object classes
-			num_queries: number of object queries, ie detection slot. This is the maximal number of objects
-						 DETR can detect in a single image. For COCO, we recommend 100 queries.
+			num_queries: number of object queries, ie detection slot.  100 queries.
 			aux_loss: True if auxiliary decoding losses (loss at each decoder layer) are to be used.
 		"""
 		super().__init__()
@@ -82,7 +81,7 @@ class DETR(nn.Module):
 
 
 class SetCriterion(nn.Module):
-	""" This class computes the loss for DETR.
+	""" This class computes the loss for MethaneMapper.
 	The process happens in two steps:
 		1) we compute hungarian assignment between ground truth boxes and the outputs of the model
 		2) we supervise each pair of matched ground-truth / prediction (supervise class and box)
@@ -309,14 +308,8 @@ def build(args):
 	# COCO has a max_obj_id of 90, so we pass `num_classes` to be 91.
 	# As another example, for a dataset that has a single class with id 1,
 	# you should pass `num_classes` to be 2 (max_obj_id + 1).
-	# For more details on this, check the following discussion
-	# https://github.com/facebookresearch/detr/issues/108#issuecomment-650269223
 	num_classes = 20 if args.dataset_file != 'coco' else 91
-	if args.dataset_file == "coco_panoptic":
-		# for panoptic, we just add a num_classes that is large enough to hold
-		# max_obj_id + 1, but the exact value doesn't really matter
-		num_classes = 250
-	elif args.dataset_file == "hyper_spec":
+	if args.dataset_file == "hyper_spec":
 		#hyperspectral dataset for methane detection
 		#classes, 0 = no_methane, 1=methane
 		num_classes = 2
@@ -328,7 +321,7 @@ def build(args):
 
 	transformer = build_transformer(args)
 
-	model = DETR(
+	model = MethaneMapper(
 		backbone,
 		transformer,
 		num_classes=num_classes,
@@ -336,7 +329,7 @@ def build(args):
 		aux_loss=args.aux_loss,
 	)
 	if args.masks:
-		model = DETRsegm(model, freeze_detr=(args.frozen_weights is not None))
+		model = MMsegm(model, freeze_detr=(args.frozen_weights is not None))
 	matcher = build_matcher(args)
 	weight_dict = {'loss_ce': 1, 'loss_bbox': args.bbox_loss_coef}
 	weight_dict['loss_giou'] = args.giou_loss_coef
