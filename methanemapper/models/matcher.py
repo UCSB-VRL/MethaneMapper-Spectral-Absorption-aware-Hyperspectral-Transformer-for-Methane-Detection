@@ -33,7 +33,7 @@ class HungarianMatcher(nn.Module):
 
     @torch.no_grad()
     def forward(self, outputs, targets):
-        """ Performs the matching
+        """Performs the matching
 
         Params:
             outputs: This is a dict that contains at least these entries:
