@@ -7,13 +7,6 @@ MethaneMapper is a fast and efficient deep learning based solution for methane d
 
 Official repository of our [**CVPR 2023 (Highlights)**](https://openaccess.thecvf.com/content/CVPR2023/papers/Kumar_MethaneMapper_Spectral_Absorption_Aware_Hyperspectral_Transformer_for_Methane_Detection_CVPR_2023_paper.pdf) paper.
 
-We tackle the problem of detecting and localizing methane plumes from hyperspectral imaging data.
-Our approach builds upon the DETR model, exploiting the spectral and spatial correlations in the images
-to generate a map of potential methane plumes and remove confusers (materials in image background with similar
-spectral absorption properties as methane). Methane mapper is a light-weight end-to-end single-stage
-CH4 detector which introduces two novel modules: a Spectral Feature Generator and a Query Refiner.
-The former generates spectral features from a linear filter that maximizes the CH4-to-noise ratio in the presence of
-additive background noise, while the latter integrates these features for decoding.
 
 ![Alt text](./docs/architecture.png)
 
