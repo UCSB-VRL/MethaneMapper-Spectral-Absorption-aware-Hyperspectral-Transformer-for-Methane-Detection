@@ -22,7 +22,7 @@ This repository includes:
 
 
 ![supported versions](https://img.shields.io/badge/python-(3.8--3.10)-brightgreen/?style=flat&logo=python&color=green)
-![Library](https://img.shields.io/badge/Library-TensorFlow-blue)
+![Library](https://img.shields.io/badge/Library-Pytorch-blue)
 ![GitHub license](https://img.shields.io/cocoapods/l/AFNetworking)
 
 
