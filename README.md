@@ -10,6 +10,22 @@ Official repository of our [**CVPR 2023 (Highlights)**](https://openaccess.thecv
 
 ![Alt text](./docs/architecture.png)
 
+
+This repository includes:
+* Source code of MethaneMapper.
+* Pre-trained weights for methane plume bounding box detector and segmentation mask
+* Scripts to download MHS dataset
+* Online tool to visualize MHS dataset
+* Code for custom data preparation for training/testing
+* Code for mapping ground truth masks from CarbonMapper to AVIRIS-NG flightline
+* Annotation generator to read-convert mask annotation into json.
+
+
+![supported versions](https://img.shields.io/badge/python-(3.8--3.10)-brightgreen/?style=flat&logo=python&color=green)
+![Library](https://img.shields.io/badge/Library-TensorFlow-blue)
+![GitHub license](https://img.shields.io/cocoapods/l/AFNetworking)
+
+
 ## Usage
 
 ### Data preparation
