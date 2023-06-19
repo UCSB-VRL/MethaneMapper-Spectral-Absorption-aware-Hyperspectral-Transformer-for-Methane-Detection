@@ -26,6 +26,20 @@ This repository includes:
 ![GitHub license](https://img.shields.io/cocoapods/l/AFNetworking)
 
 
+The repository follows the structure of paper, making it easy to follow and use/extend the work. If this research is helpful to you, please consider citing our paper (bibtex below)
+
+## Citing
+If this research is helpful to you, please consider citing our paper:
+```
+@inproceedings{kumar2023methanemapper,
+  title={Methanemapper: Spectral absorption aware hyperspectral transformer for methane detection},
+  author={Kumar, Satish and Arevalo, Ivan and Iftekhar, ASM and Manjunath, BS},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={17609--17618},
+  year={2023}
+}
+```
+
 ## Usage
 
 ### Data preparation
