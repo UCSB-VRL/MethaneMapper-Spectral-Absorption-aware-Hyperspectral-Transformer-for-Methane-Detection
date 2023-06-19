@@ -1,6 +1,11 @@
 # MethaneMapper: Spectral Absorption aware Hyperspectral Transformer for Methane Detection #
 
-Official repository of [MethaneMapper: Spectral Absorption aware Hyperspectral Transformer for Methane Detection]().
+MethaneMapper is a fast and efficient deep learning based solution for methane detection from airborne hyperspectral imagery. MethaneMapper introduces a novel end-to-end spectral absorption wavelength aware transformer network to detect the emissions. We also introduce the largest public dataset called Methane HotSpot dataset (MHS) for methane detection. This repository contains source code for MethaneMapper, scripts to download training dataset and visualize ground truth.
+
+### [**MethaneMapper: Spectral Absorption aware Hyperspectral Transformer for Methane Detection**](https://openaccess.thecvf.com/content/CVPR2023/papers/Kumar_MethaneMapper_Spectral_Absorption_Aware_Hyperspectral_Transformer_for_Methane_Detection_CVPR_2023_paper.pdf)
+[Satish Kumar*](https://www.linkedin.com/in/satish-kumar-81912540/), [Ivan Arevalo*](), [A S M Iftekhar](), [B S Manjunath](https://vision.ece.ucsb.edu/people/bs-manjunath).
+
+Official repository of our [**CVPR 2023 (Highlights)**](https://openaccess.thecvf.com/content/CVPR2023/papers/Kumar_MethaneMapper_Spectral_Absorption_Aware_Hyperspectral_Transformer_for_Methane_Detection_CVPR_2023_paper.pdf) paper.
 
 We tackle the problem of detecting and localizing methane plumes from hyperspectral imaging data.
 Our approach builds upon the DETR model, exploiting the spectral and spatial correlations in the images
