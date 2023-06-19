@@ -1,4 +1,4 @@
-# MethaneMapper: Spectral Absorption aware Hyperspectral Transformer for Methane Detection #
+## MethaneMapper: Spectral Absorption aware Hyperspectral Transformer for Methane Detection
 
 MethaneMapper is a fast and accurate deep learning based solution for methane detection from airborne hyperspectral imagery. MethaneMapper introduces a spectral absorption wavelength aware transformer network and largest public dataset called Methane HotSpot dataset (MHS). This repository contains code for MethaneMapper, scripts to download and online tool to visualize dataset.
 
