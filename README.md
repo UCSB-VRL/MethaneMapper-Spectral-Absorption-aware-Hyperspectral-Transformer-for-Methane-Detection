@@ -55,11 +55,8 @@ If this research is helpful to you, please consider citing our paper:
 pip install -r requirements.txt
 ```
 
-### Data preparation
-
-```bash
-# PUT CODE HERE
-```
+### Data Visualization
+Please checkout to the [BisQue](link here)
 
 ### Training
 
