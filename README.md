@@ -56,7 +56,7 @@ pip install -r requirements.txt
 ```
 
 ### Data Visualization
-Please checkout to the [BisQue](link here)
+Please checkout to the [BisQue](https://github.com/UCSB-VRL/MethaneMapper-Spectral-Absorption-aware-Hyperspectral-Transformer-for-Methane-Detection/blob/main/data/visualize_data/README.md)
 
 ### Training
 
