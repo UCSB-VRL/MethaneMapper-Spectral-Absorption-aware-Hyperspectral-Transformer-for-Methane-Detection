@@ -42,11 +42,21 @@ If this research is helpful to you, please consider citing our paper:
 
 ## Usage
 
-### Data preparation
+### Requirements
+- Linux or macOS with Python >= 3.7
+- Pytorch >= 1.7.0
+- CUDA >= 10.0
+- cudNN (compatible with CUDA)
 
-```bash
-# PUT CODE HERE
+### Installation
+1. Clone the repository
+2. Install dependencies
 ```
+pip install -r requirements.txt
+```
+
+### Data Visualization
+Please checkout to the [BisQue](link here)
 
 ### Training
 
