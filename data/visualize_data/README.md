@@ -7,6 +7,10 @@ Dataset is avialble on [BisQue](https://bisque2.ece.ucsb.edu/client_service/view
 Each folder contains complete AVIRIS-NG flightlines image files. The naming convention is as follows:-
 - angYYYYDDMMt
 - Each image is H x W x 4
-- 4 channels are
-- ch1: R; ch2: G; ch3: B
-- ch4: binary mask of ground truth image plume mask
+  
+Channel Number  | Spectral Information
+------------- | -------------
+Channel 1  | Red
+Channel 2  | Green
+Channel 3  | Blue
+Channel 4  | Binary Segmentation CH_4 Plume Mask
