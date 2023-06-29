@@ -16,5 +16,7 @@ pip install -r requirements.txt
 
 #### Data preparation
 Download MHS dataset by following these steps. [DATA_DOWNLOAD](https://github.com/UCSB-VRL/MethaneMapper-Spectral-Absorption-aware-Hyperspectral-Transformer-for-Methane-Detection/tree/main/mhs_dataset)
+This will download the following directory structure for you
 
 Directory structure:
+
