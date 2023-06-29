@@ -5,11 +5,16 @@ Methane HotSpot Dataset is a large-scale dataset of methane plume segmentation m
 
 
 ### Steps to download:
-1.  Open terminal on your linux machine or cmd windows system
+1. Open terminal on your linux machine or cmd windows system
 2.  ```
     cd /location/where/to/download
     ```
-3.  Connect to SFTP server using the following command
+3. Connect to SFTP server using the following command
     ```
     sftp -P 2022 anonymous@brain.ece.ucsb.edu
     ```
+4. The data us available under "public" directory
+    ```
+    ls public
+    ```
+5. To download all data 
