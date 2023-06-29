@@ -91,11 +91,5 @@ pre-commit install
 ```
 Now, whenver you commit code, pre-commit will clean it up before it is committed. You can then add the cleaned-up code and commit it. This enforces coding standards and consistency across developers.
 
-## Citation
-Please cite our work if used in your research.
-```bash
-# PLACE BIBTEX CITATION
-```
-
 ## License
 MethaneMapper is released under the MIT license. Please see the [LICENSE](./LICENSE) file for more information.
