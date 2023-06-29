@@ -31,11 +31,11 @@ Methane HotSpot Dataset is a large-scale dataset of methane plume segmentation m
 This will create the following directory structure for:
 ```
 ./training_dataset2020 OR ./training_dataset16171819
-|- mf_output
-|- mf_output_norm
-|- mf_tiles
-|- mf_tiles_no_norm
-|- rdata_tiles
-|- rgb_tiles
+|_ mf_output
+|_ mf_output_norm
+|_ mf_tiles
+|_ mf_tiles_no_norm
+|_ rdata_tiles
+|_ rgb_tiles
 
 ```
