@@ -61,16 +61,7 @@ Please checkout to the [BisQue](https://github.com/UCSB-VRL/MethaneMapper-Spectr
 Please follow the tutorial [MHS_dataset](https://github.com/UCSB-VRL/MethaneMapper-Spectral-Absorption-aware-Hyperspectral-Transformer-for-Methane-Detection/tree/main/mhs_dataset) to download dataset
 
 ### Training
-
-```bash
-# PUT CODE HERE
-```
-
-### Evaluation
-
-```bash
-# PUT CODE HERE
-```
+Follow the training tutorial [Here](https://github.com/UCSB-VRL/MethaneMapper-Spectral-Absorption-aware-Hyperspectral-Transformer-for-Methane-Detection/blob/main/methanemapper/README.md)
 
 ## For developers
 Pre-Commit
