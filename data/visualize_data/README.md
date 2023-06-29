@@ -14,3 +14,6 @@ Channel 1  | Red
 Channel 2  | Green
 Channel 3  | Blue
 Channel 4  | Binary Segmentation CH_4 Plume Mask
+
+### Video tutorial for Ground truth visualization on [BisQue](https://bisque2.ece.ucsb.edu/client_service/view?resource=https://bisque2.ece.ucsb.edu/data_service/00-kKkPJUHK6KJDEVBRfDpmmA)
+<img src="data_view_vid.gif" width="700">
