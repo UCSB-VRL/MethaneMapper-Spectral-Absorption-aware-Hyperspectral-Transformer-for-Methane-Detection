@@ -19,6 +19,36 @@ Download MHS dataset by following these steps. [DATA_DOWNLOAD](https://github.co
 
 Directory structure from download :
 ```
-
+./training_dataset2020 OR ./training_dataset16171819
+|_ mf_output
+|_ mf_output_norm
+|_ mf_tiles #matched filter tiles
+|_ mf_tiles_no_norm
+|_ rdata_tiles #raw 90 bands from hyperspectral image
+|_ rgb_tiles #reconstructed RGB image from hyperspectral image
+```
+No create soft links to the "./data/train_dataset" folder as follows to avoud duplication of dataset (~size 10 TB):
+1. matched_filter output tiles to mf_tiles folder
+```
+ln -s ./training_dataset2020/mf_tiles methanemapper/data/train_dataset/train/mf_tiles
+ln -s ./training_dataset2020/mf_tiles methanemapper/data/train_dataset/val/mf_tiles
+```
+2. Link the raw 90 bands tiles to rgb_tiles folder
+```
+ln -s ./training_dataset2020/rgb_tiles methanemapper/data/train_dataset/train/rgb_tiles
+ln -s ./training_dataset2020/rgb_tiles methanemapper/data/train_dataset/val/rgb_tiles
+```
+3. Link the reconstructed RGB image tiles to rdata_tiles folder
+```
+ln -s ./training_dataset2020/rdata_tiles methanemapper/data/train_dataset/train/rdata_tiles
+ln -s ./training_dataset2020/rdata_tiles methanemapper/data/train_dataset/val/rdata_tiles
 ```
 
+#### Training methane plume bounding box detector 
+```
+./plume_box_run.sh
+```
+#### Fine-tuning plume segmentation mask detector 
+```
+./plume_mask_run.sh
+```
