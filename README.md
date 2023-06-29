@@ -8,8 +8,7 @@ MethaneMapper is a fast and accurate deep learning based solution for methane de
 Official repository of our [**CVPR 2023 (Highlights)**](https://openaccess.thecvf.com/content/CVPR2023/papers/Kumar_MethaneMapper_Spectral_Absorption_Aware_Hyperspectral_Transformer_for_Methane_Detection_CVPR_2023_paper.pdf) paper.
 
 
-![Alt text](./docs/architecture.png)
-
+![Alt text](./docs/mainpage_github.gif)
 
 This repository includes:
 * Source code of MethaneMapper.
