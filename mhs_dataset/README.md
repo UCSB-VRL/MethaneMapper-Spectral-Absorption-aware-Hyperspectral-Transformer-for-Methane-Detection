@@ -3,7 +3,6 @@ Methane HotSpot Dataset is a large-scale dataset of methane plume segmentation m
 
 [Dataset size is over 10 Tera Bytes. We created a sftp server to download the data, please follow in steps:]()
 
-
 ### Steps to download:
 1. Open terminal on your linux machine or cmd windows system
 2.  ```
@@ -17,4 +16,11 @@ Methane HotSpot Dataset is a large-scale dataset of methane plume segmentation m
     ```
     ls public
     ```
-5. To download all data 
+5. To download all data: Year 2015-2020 (over 10 TB size)
+    ```
+    get -r public/* .
+    ```
+6. To download a subset for trail: Year 2020 (~1 TB size)
+    ```
+    get -r public/training_data2020 .
+    ```
