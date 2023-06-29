@@ -58,8 +58,8 @@ pip install -r requirements.txt
 ### Data Visualization
 Please checkout to the [BisQue](https://github.com/UCSB-VRL/MethaneMapper-Spectral-Absorption-aware-Hyperspectral-Transformer-for-Methane-Detection/blob/main/data/visualize_data/README.md)
 
-### Download training hyperspectral data
-Please use the "script" to download the data.
+### Download Methane HotSpot (MHS) Dataset 
+Please follow the tutorial [MHS_dataset](https://github.com/UCSB-VRL/MethaneMapper-Spectral-Absorption-aware-Hyperspectral-Transformer-for-Methane-Detection/tree/main/mhs_dataset) to download dataset
 
 ### Training
 
