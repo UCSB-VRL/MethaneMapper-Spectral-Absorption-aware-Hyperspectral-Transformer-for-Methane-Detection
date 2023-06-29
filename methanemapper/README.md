@@ -1,7 +1,7 @@
 ### MethaneMapper Training code
 MethaneMapper repository structure is similar to DETR repository from META. The training policy involves first training for bounding [box detection](https://github.com/UCSB-VRL/MethaneMapper-Spectral-Absorption-aware-Hyperspectral-Transformer-for-Methane-Detection/blob/main/methanemapper/plume_box_run.sh) of methane plumes, followed by fine-tuning for methane plume [segmentation mask](https://github.com/UCSB-VRL/MethaneMapper-Spectral-Absorption-aware-Hyperspectral-Transformer-for-Methane-Detection/blob/main/methanemapper/plume_mask_run.sh).
 
-<img src="../docs/architecture.png" width="800">
+<img src="../docs/architecture.png" width="900">
 
 There are no extra compiled components in MethaneMapper and package dependencies are minimal mentioned in the [requirements.txt](https://github.com/UCSB-VRL/MethaneMapper-Spectral-Absorption-aware-Hyperspectral-Transformer-for-Methane-Detection/blob/main/requirements.txt). Codebase is very simple to use. 
 
