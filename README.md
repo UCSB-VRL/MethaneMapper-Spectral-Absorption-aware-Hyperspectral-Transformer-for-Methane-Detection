@@ -73,14 +73,6 @@ Please follow the tutorial [MHS_dataset](https://github.com/UCSB-VRL/MethaneMapp
 # PUT CODE HERE
 ```
 
-## Methane Hot Spots (MHS)
-
-In addition, we introduce Methane Hot Spots (MHS), a large-scale dataset of methane
-plume segmentation masks for over 1200 AVIRIS-NG flight
-lines collected by JPL from 2015-2022. It contains over 4000 methane plume
-sites covering terrain from 6 states: California, Nevada, New Mexico, Colorado,
-Midland Texas, and Virginia. MHS dataset is available for browsing, visualization, and download in [BisQue]().
-
 ## For developers
 Pre-Commit
 In order to provide some degree of uniformity in style, we can use the pre-commit tool to clean up source files prior to being committed. Pre-Commit runs a number of plugins defined in .pre-commit-config.yaml. These plugins enforce coding style guidelines.
