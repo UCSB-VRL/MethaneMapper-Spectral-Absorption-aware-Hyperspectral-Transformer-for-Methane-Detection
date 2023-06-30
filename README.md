@@ -63,5 +63,8 @@ Please follow the tutorial [MHS_dataset](https://github.com/UCSB-VRL/MethaneMapp
 ### Training
 Follow the training tutorial [Here](https://github.com/UCSB-VRL/MethaneMapper-Spectral-Absorption-aware-Hyperspectral-Transformer-for-Methane-Detection/blob/main/methanemapper/README.md)
 
+## For Developers
+Please refer to CONTRIBUTING.md for contribution to the repo. Thank you!
+
 ## License
 MethaneMapper is released under the MIT license. Please see the [LICENSE](./LICENSE) file for more information.
