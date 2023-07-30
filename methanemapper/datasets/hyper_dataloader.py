@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+import os
 
 import numpy as np
 import torch
@@ -103,8 +104,8 @@ class LoadItems:
 
         if not stats_file == None:
             print("loading mean and std for each band...")
-            self.mean = np.load(f"{stats_file}/dataset_mean.npy")
-            self.std = np.load(f"{stats_file}/dataset_std.npy")
+            self.mean = np.load(os.path.join(f"{stats_file}", f"dataset_mean.npy"))
+            self.std = np.load(os.path.join(f"{stats_file}", f"dataset_std.npy"))
 
     def createList(self):
         # create list of all images and annotations
@@ -138,10 +139,10 @@ class LoadItems:
             _iid = self.img_id[_ann_key]
             _pid = self.patch_id[_ann_key]
 
-            _rgb = glob.glob(f"{self.img_dir}/rgb_tiles/{_iid}_*/*_{_pid}.npy")[0]
-            _tmp = _rgb.split("/")
-            _mf = f"{self.img_dir}/mf_tiles/{_tmp[-2]}/{_tmp[-1]}"
-            _raw = f"{self.img_dir}/rdata_tiles/{_tmp[-2]}/{_tmp[-1]}"
+            _rgb = glob.glob(os.path.join(f"{self.img_dir}", f"rgb_tiles", f"{_iid}_*", f"*_{_pid}.npy"))[0]
+            _tmp = _rgb.split(os.sep)
+            _mf = os.path.join(f"{self.img_dir}", f"mf_tiles", f"{_tmp[-2]}", f"{_tmp[-1]}")
+            _raw = os.path.join(f"{self.img_dir}", f"rdata_tiles", f"{_tmp[-2]}", f"{_tmp[-1]}")
             rgb_paths.append(_rgb), mf_paths.append(_mf), raw_paths.append(_raw)
 
         assert len(rgb_paths) == len(self.anns), "Number of annotations are different from images"
