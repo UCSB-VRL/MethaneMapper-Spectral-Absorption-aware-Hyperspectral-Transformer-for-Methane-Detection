@@ -98,6 +98,7 @@ def get_args_parser():
     parser.add_argument("--dataset_file", default="coco")
     parser.add_argument("--hyper_path", type=str)
     parser.add_argument("--remove_difficult", action="store_true")
+    parser.add_argument("--small_tiles", default=False, type=bool)
 
     parser.add_argument("--device", default="cuda", help="device to use for training / testing")
     parser.add_argument("--seed", default=42, type=int)

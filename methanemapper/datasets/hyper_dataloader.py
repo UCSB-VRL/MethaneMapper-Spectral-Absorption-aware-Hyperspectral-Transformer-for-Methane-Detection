@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+import os
 
 import numpy as np
 import torch
@@ -13,20 +14,21 @@ import glob
 
 
 class HyperSegment(tdata.Dataset):
-    def __init__(self, img_folder, ann_file, stats_file, return_masks):
-        self.data_items = LoadItems(img_folder, ann_file, stats_file)
+    def __init__(self, img_folder, ann_file, stats_file, args):
+        self.data_items = LoadItems(img_folder, ann_file, stats_file, args)
         self._transform_rgb = makeHyperTransform(img_type="rgb")
         self._transform_mf = makeHyperTransform(img_type="mf")
         self._transform_raw = makeHyperTransform(img_type="raw", stats=self.data_items)
-        self.prepare = ConvertHyperToMask(return_masks)
+        self.prepare = ConvertHyperToMask(args.masks)
         self.target_keys = list(self.data_items.anns.keys())
+        self.small_tiles = args.small_tiles
 
     def __getitem__(self, idx):
         rgb_path = self.data_items.rgb_paths[idx]
         mf_path = self.data_items.mf_paths[idx]
         raw_path = self.data_items.raw_paths[idx]
         target = self.data_items.anns[self.target_keys[idx]]
-        rgb_img, mf_img, raw_img, target = self.prepare(rgb_path, mf_path, raw_path, target)
+        rgb_img, mf_img, raw_img, target = self.prepare(rgb_path, mf_path, raw_path, target, self.small_tiles)
 
         if self._transform_rgb is not None:
             rgb_img, target = self._transform_rgb(rgb_img, target)
@@ -88,7 +90,7 @@ def makeHyperTransform(img_type, stats=None):
 
 
 class LoadItems:
-    def __init__(self, img_folder, ann_file, stats_file):
+    def __init__(self, img_folder, ann_file, stats_file, args):
         # load dataset
         self.anns, self.imgs = dict(), dict()
         self.img_dir = img_folder
@@ -99,12 +101,12 @@ class LoadItems:
             assert type(dataset) == dict, "annotation file format {} not supported".format(type(dataset))
             self.dataset = dataset
             self.createList()
-            self.createPaths()
+            self.createPaths(args)
 
         if not stats_file == None:
             print("loading mean and std for each band...")
-            self.mean = np.load(f"{stats_file}/dataset_mean.npy")
-            self.std = np.load(f"{stats_file}/dataset_std.npy")
+            self.mean = np.load(os.path.join(f"{stats_file}", f"dataset_mean.npy"))
+            self.std = np.load(os.path.join(f"{stats_file}", f"dataset_std.npy"))
 
     def createList(self):
         # create list of all images and annotations
@@ -129,7 +131,7 @@ class LoadItems:
         self.img_id = img_id
         self.patch_id = patch_id
 
-    def createPaths(self):
+    def createPaths(self, args):
         # create a list of all rgb, mf, raw images
         print("creating image paths list")
         rgb_paths, mf_paths, raw_paths = [], [], []
@@ -138,10 +140,14 @@ class LoadItems:
             _iid = self.img_id[_ann_key]
             _pid = self.patch_id[_ann_key]
 
-            _rgb = glob.glob(f"{self.img_dir}/rgb_tiles/{_iid}_*/*_{_pid}.npy")[0]
-            _tmp = _rgb.split("/")
-            _mf = f"{self.img_dir}/mf_tiles/{_tmp[-2]}/{_tmp[-1]}"
-            _raw = f"{self.img_dir}/rdata_tiles/{_tmp[-2]}/{_tmp[-1]}"
+            _rgb = glob.glob(
+                os.path.join(
+                    f"{self.img_dir}", f"rgb_tiles", f"{_iid}_*", f"*_{_pid}." + ("npz" if args.small_tiles else "npy")
+                )
+            )[0]
+            _tmp = _rgb.split(os.sep)
+            _mf = os.path.join(f"{self.img_dir}", f"mf_tiles", f"{_tmp[-2]}", f"{_tmp[-1]}")
+            _raw = os.path.join(f"{self.img_dir}", f"rdata_tiles", f"{_tmp[-2]}", f"{_tmp[-1]}")
             rgb_paths.append(_rgb), mf_paths.append(_mf), raw_paths.append(_raw)
 
         assert len(rgb_paths) == len(self.anns), "Number of annotations are different from images"
@@ -156,11 +162,31 @@ class ConvertHyperToMask(object):
     def __init__(self, return_masks=False):
         self.return_masks = return_masks
 
-    def __call__(self, rgb_path, mf_path, raw_path, target):
+    def __call__(self, rgb_path, mf_path, raw_path, target, small_tiles):
         # dim order according to coco : ch, h, w
-        rgb_img = np.load(rgb_path).transpose((2, 0, 1))
-        mf_img = np.expand_dims(np.load(mf_path), axis=2).transpose((2, 0, 1))
-        raw_img = np.load(raw_path).transpose((2, 0, 1))
+        def load(path):
+            if small_tiles:
+                i = -5
+                while path[i:-4].isdigit():
+                    i = i - 1
+                y = int(path[i + 1 : -4])
+                j = i - 1
+                while path[j:i].isdigit():
+                    j = j - 1
+                x = int(path[j + 1 : i])
+                arr00 = np.load(path)["arr_0"]
+                arr01 = np.load(path[:j] + "_" + str(x) + "_" + str(y + 1) + ".npz")["arr_0"]
+                arr10 = np.load(path[:j] + "_" + str(x + 1) + "_" + str(y) + ".npz")["arr_0"]
+                arr11 = np.load(path[:j] + "_" + str(x + 1) + "_" + str(y + 1) + ".npz")["arr_0"]
+                return np.concatenate(
+                    (np.concatenate((arr00, arr10), axis=0), np.concatenate((arr01, arr11), axis=0)), axis=1
+                )
+            else:
+                return np.load(path)
+
+        rgb_img = load(rgb_path).transpose((2, 0, 1))
+        mf_img = np.expand_dims(load(mf_path), axis=2).transpose((2, 0, 1))
+        raw_img = load(raw_path).transpose((2, 0, 1))
 
         _, h, w = rgb_img.shape
 
@@ -237,6 +263,6 @@ def buildHyperSeg(image_set, args):
     }
 
     img_folder, ann_file, stats_file = PATHS[image_set]
-    dataset = HyperSegment(img_folder, ann_file, stats_file, return_masks=args.masks)
+    dataset = HyperSegment(img_folder, ann_file, stats_file, args)
 
     return dataset
